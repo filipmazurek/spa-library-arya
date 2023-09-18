@@ -1,0 +1,28 @@
+[build-system]
+requires = ['setuptools>=60.0']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'spa'
+version = '0.0.1'
+authors = [
+  { name='Filip Mazurek', email='filip.mazurek@duke.edu' },
+]
+description = 'SMC for Processor Analysis'
+readme = 'README.md'
+requires-python = '>=3.7'
+license = {file = 'LICENSE'}
+classifiers = [
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: Apache-2.0',
+    'Programming Language :: Python :: 3',
+]
+
+dependencies = [
+    'numpy',
+    'scipy',
+    'sympy'
+]
+
+[project.urls]
+'Homepage' = 'https://github.com/filipmazurek/spa-library'

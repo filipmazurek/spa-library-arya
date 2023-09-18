@@ -1,0 +1,11 @@
+name: spa
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - scipy
+  - sympy
+  - pip
+  - pip:
+      # Install SPA library from GitHub using SSH
+      - "git+ssh://git@github.com/filipmazurek/spa-library@v0.0.1"

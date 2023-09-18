@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Distribution / packaging
+*.egg
+*.egg-info/
+
+# Build files
+build/
+
+# PyCharm
+/.idea/
+
+# MacOS
+.DS_Store
+

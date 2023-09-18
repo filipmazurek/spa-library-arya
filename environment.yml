@@ -1,0 +1,11 @@
+name: spa
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - scipy
+  - sympy
+  - pip
+  - pip:
+      # Local installation
+      - -e ./
