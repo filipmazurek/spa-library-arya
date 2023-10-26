@@ -40,9 +40,10 @@ def smc(data, property_: BaseProperty, prob_threshold: float, confidence: float,
     set to True so that all SMC runs use the same data.
     :return: Result packaged in a SMCResult object.
     """
+    #print(data)
     # Validate the input
     _smc_iv(data, property_, prob_threshold, confidence, continuous)
-
+    
     result = None  # Keep track of the intermediate algorithm result
     num_trials = 0  # Total number of trials run
     satisfied_trials = 0  # Number of trials satisfying condition
@@ -101,7 +102,8 @@ def smc(data, property_: BaseProperty, prob_threshold: float, confidence: float,
         # Check current result
         result = (satisfied_trials / num_trials) > prob_threshold
         lean_list.append(result)
-
+    
+    print(create_smc_result(result, conf_cp, num_trials, satisfied_trials, conf_cp_list, lean_list))
     return create_smc_result(result, conf_cp, num_trials, satisfied_trials, conf_cp_list, lean_list)
 
 

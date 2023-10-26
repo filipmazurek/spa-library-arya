@@ -1,13 +1,16 @@
 import csv
 from pathlib import Path
-import pytest
 from typing import List
+import unittest
 
 from spa.core import SPAException, spa
-from spa.properties import ThresholdProperty, RatioHyperproperty
+from spa.ThresholdProperty import ThresholdProperty
+from spa.RatioHyperproperty import RatioHyperproperty
+import pandas as pd
 
-slow_data_file = str(Path(__file__).parent) + '/data/ferret-l2_512kB-simticks.csv'
-fast_data_file = str(Path(__file__).parent) + '/data/ferret-l2_3MB-simticks.csv'
+prop_1 = str(Path(__file__).parent) + '/data/prop1.csv'
+prop_2 = str(Path(__file__).parent) + '/data/prop2.csv'
+prop1_incomplete = str(Path(__file__).parent) + '/data/prop1_incomplete.csv'
 
 
 def read_data(directory: str) -> List[int]:
@@ -20,31 +23,32 @@ def read_data(directory: str) -> List[int]:
 
     return data
 
+def read_into_df(directory: str) -> pd.DataFrame:
+    return pd.read_csv(directory)
+
 
 def test_basic_threshold():
     # Find data to analyze
-    slow_data = read_data(slow_data_file)
+    data = read_into_df(prop_1)
 
     # Should complete successfully
-    spa(slow_data, ThresholdProperty(), prob_threshold=0.9, confidence=0.9)
+    print(spa(data, ThresholdProperty(threshold=80), prob_threshold=0.9, confidence=0.9))
 
 
 def test_basic_ratio():
     # Get data
-    slow_data = read_data(slow_data_file)
-    fast_data = read_data(fast_data_file)
+    data = read_into_df(prop_1)
 
-    # Prepare RatioHyperproperty data
-    data = [slow_data, fast_data]
-
-    # Run smc using the RatioHyperproperty (used to find speedup for 2 data sources)
-    spa(data, RatioHyperproperty(), prob_threshold=0.5, confidence=0.9)
-
+    # Run spa using the RatioHyperproperty (used to find speedup for 2 data sources)
+    print(spa(data, RatioHyperproperty(threshold=0.6), prob_threshold=0.5, confidence=0.9))
 
 def test_insufficient_samples():
     # Get too little data to converge to a result
-    slow_data = read_data(slow_data_file)[:10]
+    data = read_into_df(prop1_incomplete)
 
-    with pytest.raises(SPAException):
-        # Speed up testing by setting a low iteration limit
-        spa(slow_data, ThresholdProperty(), prob_threshold=0.9, confidence=0.9, iteration_limit=5)
+    with unittest.TestCase.assertRaises(None, SPAException):
+        spa(data, ThresholdProperty(threshold=80), prob_threshold=0.9, confidence=0.9, iteration_limit=5)
+
+test_basic_threshold()
+test_basic_ratio()
+test_insufficient_samples()
